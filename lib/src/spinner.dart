@@ -35,40 +35,24 @@ Widget buildSpinner({
         color: color ?? Colors.blue,
         size: size,
         duration: animationDuration ?? const Duration(milliseconds: 1200),
-        controller: AnimationController(
-          vsync: vsync,
-          duration: const Duration(milliseconds: 1200),
-        ),
       );
     case SpinStyle.cubeGrid:
       return SpinKitCubeGrid(
         color: color ?? Colors.blue,
         size: size,
         duration: animationDuration ?? const Duration(milliseconds: 1200),
-        controller: AnimationController(
-          vsync: vsync,
-          duration: const Duration(milliseconds: 1200),
-        ),
       );
     case SpinStyle.dancingSquare:
       return SpinKitDancingSquare(
         color: color ?? Colors.blue,
         size: size,
         duration: animationDuration ?? const Duration(milliseconds: 1200),
-        controller: AnimationController(
-          vsync: vsync,
-          duration: const Duration(milliseconds: 1200),
-        ),
       );
     case SpinStyle.doubleBounce:
       return SpinKitDoubleBounce(
         color: color ?? Colors.blue,
         size: size,
         duration: animationDuration ?? const Duration(milliseconds: 1200),
-        controller: AnimationController(
-          vsync: vsync,
-          duration: const Duration(milliseconds: 1200),
-        ),
       );
     case SpinStyle.dualRing:
       return SpinKitDualRing(
@@ -82,10 +66,6 @@ Widget buildSpinner({
         color: color ?? Colors.blue,
         size: size,
         duration: animationDuration ?? const Duration(milliseconds: 1200),
-        controller: AnimationController(
-          vsync: vsync,
-          duration: const Duration(milliseconds: 1200),
-        ),
       );
     case SpinStyle.fadingCube:
       return SpinKitFadingCube(
