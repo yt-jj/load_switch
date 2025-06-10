@@ -1,3 +1,7 @@
+### [2.2.1] Bug fixes
+
+- Removes redundant AnimationControllers from toggle styles
+
 ### [2.2.0] Controller Support
 
 - Adds `LoadSwitchController` for programmatic control of the switch
