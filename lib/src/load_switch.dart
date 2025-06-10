@@ -34,10 +34,9 @@ class LoadSwitch extends StatefulWidget {
             (controller == null &&
                     value != null &&
                     future != null &&
-                    onChange != null &&
-                    onTap != null) ||
+                    onChange != null) ||
                 (controller != null),
-            "Either provide a controller or all of value, future, onChange, and onTap"),
+            "Either provide a controller or all of value, future and onChange."),
         super(key: key);
 
   /// Controller to manage the switch state programmatically.
