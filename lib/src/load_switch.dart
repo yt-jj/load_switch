@@ -5,6 +5,7 @@ import 'package:load_switch/src/load_switch_controller.dart';
 import 'package:load_switch/src/spin_styles.dart';
 import 'package:load_switch/src/spinner.dart';
 
+@immutable
 class LoadSwitch extends StatefulWidget {
   const LoadSwitch({
     this.value,
