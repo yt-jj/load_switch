@@ -288,9 +288,8 @@ class _LoadSwitchState extends State<LoadSwitch> with TickerProviderStateMixin {
             ],
           ),
       child: loading
-          ? buildSpinner(
+          ? SpinnerWidget(
               style: widget.style,
-              vsync: this,
               value: value,
               size: widget.height,
               width: widget.spinStrokeWidth,
