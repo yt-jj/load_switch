@@ -13,42 +13,33 @@ class LoadSwitchControllerExample extends StatefulWidget {
 
 class _LoadSwitchControllerExampleState
     extends State<LoadSwitchControllerExample> {
-  // Create a controller to manage the switch state
   late LoadSwitchController _controller;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the controller with default values
     _controller = LoadSwitchController(
       initialValue: false,
-      isLoading: false,
-      isActive: true,
     );
-
-    // Listen to changes in the switch value
-    _controller.addListener(_handleControllerChange);
+    _controller.addListener(_onControllerChange);
   }
 
-  void _handleControllerChange() {
-    // React to controller changes if needed
-    log('Switch value: ${_controller.value}');
-    log('Loading state: ${_controller.isLoading}');
-    log('Active state: ${_controller.isActive}');
+  void _onControllerChange() {
+    log('Controller changed - Value: ${_controller.value}, Loading: ${_controller.isLoading}');
+    setState(() {}); // Rebuild UI when controller changes
   }
 
-  // Simulate an async operation
-  Future<bool> _mockOperation() async {
-    // Simulate network delay
-    await Future.delayed(const Duration(seconds: 2));
-    // Return a new value (in a real app, this would come from an API)
-    return !_controller.value;
+  Future<bool> _simulateAsyncOperation() async {
+    log('Starting async operation... current value: ${_controller.value}');
+    await Future.delayed(const Duration(seconds: 1));
+    final newValue = !_controller.value;
+    log('Async operation completed, returning: $newValue');
+    return newValue;
   }
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed
-    _controller.removeListener(_handleControllerChange);
+    _controller.removeListener(_onControllerChange);
     _controller.dispose();
     super.dispose();
   }
@@ -57,74 +48,89 @@ class _LoadSwitchControllerExampleState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LoadSwitch Controller Example'),
+        title: const Text('Controller Example'),
+        backgroundColor: Colors.blue,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Use the switch with a controller
+            // Current Status
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Current Status',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Value: ${_controller.value}'),
+                        Text('Loading: ${_controller.isLoading}'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Active: ${_controller.isActive}'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // The LoadSwitch
             LoadSwitch(
               controller: _controller,
-              future: _mockOperation,
-              onTap: (value) => log('Tapped: $value'),
-              onChange: (value) => log('Changed to: $value'),
-              onError: (error) => log('Error: $error'),
-              style: SpinStyle.circle,
-              spinColor: (value) => value ? Colors.green : Colors.red,
+              future: _simulateAsyncOperation,
+              onChange: (value) {
+                log('LoadSwitch onChange callback: $value');
+              },
+              onError: (error) {
+                log('LoadSwitch onError callback: $error');
+              },
+              style: SpinStyle.material,
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
 
-            // External controls for the switch
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            // Control Buttons
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              alignment: WrapAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () => _controller.toggle(),
                   child: const Text('Toggle'),
                 ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    _controller.executeWithLoading(
-                      _mockOperation,
-                      onChange: (value) => log('Changed to: $value'),
-                    );
-                  },
-                  child: const Text('Execute with Loading'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
                 ElevatedButton(
                   onPressed: () {
                     _controller.isActive = !_controller.isActive;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text(_controller.isActive
-                              ? 'Switch activated'
-                              : 'Switch deactivated')),
-                    );
                   },
-                  child: const Text('Toggle Active State'),
-                ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Force loading state manually
-                    _controller.isLoading = true;
-                    Future.delayed(const Duration(seconds: 2), () {
-                      if (mounted) {
-                        _controller.isLoading = false;
-                      }
-                    });
-                  },
-                  child: const Text('Manual Loading'),
+                  child: Text(_controller.isActive ? 'Deactivate' : 'Activate'),
                 ),
               ],
+            ),
+            const SizedBox(height: 24),
+
+            // Info
+            const Card(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'This example shows how to use LoadSwitchController to '
+                  'programmatically control the switch state. The controller '
+                  'has retry functionality with exponential backoff enabled.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
           ],
         ),
