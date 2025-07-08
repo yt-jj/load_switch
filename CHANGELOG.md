@@ -1,6 +1,8 @@
 ### [2.2.1] Bug fixes
 
-- Removes redundant AnimationControllers from toggle styles
+- Removes redundant `AnimationControllers` from toggle styles
+- Internal code cleanup and optimizations
+- Improves examples
 
 ### [2.2.0] Controller Support
 
